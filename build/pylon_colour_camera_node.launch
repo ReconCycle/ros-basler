@@ -2,11 +2,13 @@
 <launch>
     <arg name="respawn" default="false" />
     <arg name="debug" default="false" />
-    <arg name="node_name" default="pylon_camera_node" />
+    <arg name="node_name" default="basler" />
     <arg name="mtu_size" default="1500" />
-    <arg name="startup_user_set" default="CurrentSetting" />
+    <!-- <arg name="startup_user_set" default="CurrentSetting" /> -->
+    <arg name="startup_user_set" default="UserSet2" />
     <arg name="enable_status_publisher" default="true" />
     <arg name="enable_current_params_publisher" default="true" />
+    <!-- <arg name="config_file" default="$(find pylon_camera)/config/default.yaml" /> -->
     <arg name="config_file" default="$(find pylon_camera)/config/colour_camera.yaml" />
 
     <arg unless="$(arg debug)" name="launch_prefix" value="" />
@@ -24,21 +26,17 @@
     </node>
    
    <!-- added to provide RGB ROS node-->
-    <node ns="pylon_camera_node" name="rgb_converter" pkg="image_proc" type="image_proc" >
+    <node ns="basler" name="rgb_converter" pkg="image_proc" type="image_proc" >
     </node>
 
-    <node pkg="nodelet" type="nodelet" name="image_resizer" args="standalone image_proc/resize">
+    <!-- Adds a new node called image_resizer/image -->
+    <!-- in the remap, the to="..." should be the actual topic we want to subscribe to -->
+    <!-- <node pkg="nodelet" type="nodelet" name="image_resizer" args="standalone image_proc/resize">
       <param name="scale_width" type="double" value="0.5"/>
       <param name="scale_height" type="double" value="0.5"/>
         
-      <remap to="/pylon_camera_node/image_color" from="image"/>
-      <remap to="/pylon_camera_node/camera_info" from="camera_info"/>
-    </node>
-
-    <!-- <node pkg="nodelet" type="nodelet" name="image_rectifier" args="standalone image_proc/rectify">
-        
-      <remap to="/pylon_camera_node/image_color" from="image"/>
-      <remap to="/pylon_camera_node/camera_info" from="camera_info"/>
+      <remap from="image" to="/pylon_camera_node/image_color" /> 
+      <remap from="camera_info" to="/pylon_camera_node/camera_info" />
     </node> -->
 
 </launch>

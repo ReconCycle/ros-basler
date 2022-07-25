@@ -10,7 +10,7 @@ device_user_id: ""
 #  from the ROS-CameraInfoManager:
 #  http://docs.ros.org/api/camera_info_manager/html/classcamera__info__manager_
 #  1_1CameraInfoManager.html#details
-camera_info_url: ""
+camera_info_url: "file:///root/catkin_ws/src/pylon-ros-camera/pylon_camera/config/calibration_1450x1450_goe.yaml"
 
 #  The encoding of the pixels -- channel meaning, ordering, size
 #  taken from the list of strings in include/sensor_msgs/image_encodings.h
@@ -25,6 +25,8 @@ image_encoding: "yuv422"
 #  (width / binning_x) x (height / binning_y).
 #  The default values binning_x = binning_y = 0 are considered the same
 #  as binning_x = binning_y = 1 (no subsampling).
+
+# Seb: this binning doesn't work here? binning works when set with pylon viewer
 binning_x: 2
 binning_y: 2
 
@@ -40,10 +42,13 @@ grab_timeout: 500  # in ms
 # 0 : GrabStrategy_OneByOne
 # 1 : GrabStrategy_LatestImageOnly
 # 2 : GrabStrategy_LatestImages
+# grab_strategy : 0
 grab_strategy : 0
 
-roi.width: 2900
-roi.height: 2900
+# Seb: I don't think this roi.width/height does anything. It is taking the numbers from the userset
+# roi.width: 2900
+# roi.height: 2900
+
 
 ##--White Balance Auto--##
 # Automatically corrects color shifts in images acquired. 0 = Off, 1 = Once, 2 = Continuous
