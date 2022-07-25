@@ -18,6 +18,29 @@ In the `docker-compose.yml` file, the important line is:
 command: roslaunch pylon_camera pylon_colour_camera_node.launch
 ```
 
+## Camera Setup
+
+In UserSet2 specify the following:
+
+- binning 2
+- output resolution (after binning) 1450 x 1450
+- center x and y
+
+## Camera Calibration
+
+The [pylon ROS driver](https://github.com/basler/pylon-ros-camera) can accept a camera calibration file.
+
+To run the calibration on a 10x7 checkerboard with 20.1mm squares:
+```
+rosrun camera_calibration cameracalibrator.py --size 10x7 --square 0.0201 image:=/pylon_camera_node/image_color camera:=/pylon_camera_node
+```
+[Read the docs for further info](http://wiki.ros.org/camera_calibration).
+
+To save an image to file, run:
+```
+rosrun image_view image_saver image:=/pylon_camera_node/image_color
+```
+
 ## Debugging
 
 Comment out the `command: ...` line.

@@ -30,6 +30,8 @@ RUN cd $CATKIN_WS/src && git clone https://github.com/basler/pylon-ros-camera.gi
 COPY pylon_colour_camera_node.launch $CATKIN_WS/src/pylon-ros-camera/pylon_camera/launch/
 COPY colour_camera.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
 
+COPY calibration_1450x1450_goe.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
+
 RUN sh -c 'echo "yaml https://raw.githubusercontent.com/basler/pylon-ros-camera/master/pylon_camera/rosdep/pylon_sdk.yaml" > /etc/ros/rosdep/sources.list.d/30-pylon_camera.list'
 
 RUN source "/opt/ros/$ROS_DISTRO/setup.bash" && \

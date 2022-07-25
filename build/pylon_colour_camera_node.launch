@@ -23,11 +23,22 @@
 
     </node>
    
-    <node ns="pylon_camera_node" name="rgb_converter" pkg="image_proc" type="image_proc" ><!-- added to provide RGB ROS node-->
+   <!-- added to provide RGB ROS node-->
+    <node ns="pylon_camera_node" name="rgb_converter" pkg="image_proc" type="image_proc" >
     </node>
 
-    <!-- <node pkg="image_proc" type="resize">
-      <param name="image">
+    <node pkg="nodelet" type="nodelet" name="image_resizer" args="standalone image_proc/resize">
+      <param name="scale_width" type="double" value="0.5"/>
+      <param name="scale_height" type="double" value="0.5"/>
+        
+      <remap to="/pylon_camera_node/image_color" from="image"/>
+      <remap to="/pylon_camera_node/camera_info" from="camera_info"/>
+    </node>
+
+    <!-- <node pkg="nodelet" type="nodelet" name="image_rectifier" args="standalone image_proc/rectify">
+        
+      <remap to="/pylon_camera_node/image_color" from="image"/>
+      <remap to="/pylon_camera_node/camera_info" from="camera_info"/>
     </node> -->
 
 </launch>
