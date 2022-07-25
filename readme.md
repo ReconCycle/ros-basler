@@ -1,4 +1,4 @@
-# Docker [pylon-ROS-camera](https://github.com/basler/pylon-ros-camera)
+# ros-basler: Docker [pylon-ROS-camera](https://github.com/basler/pylon-ros-camera)
 
 Basler provides an official [pylon ROS driver](https://github.com/basler/pylon-ros-camera) for Basler GigE Vision and USB3 Vision cameras. This project provides a docker wrapper for it.
 
@@ -39,4 +39,21 @@ roslaunch pylon_camera pylon_camera_node.launch
 GigE Cameras IP Configuration can be done using the command: 
 ```bash
 roslaunch pylon_camera pylon_camera_ip_configuration.launch
+```
+
+## Notes
+
+
+
+```xml
+<node ns="pylon_camera_node" name="rgb_converter" pkg="image_proc" type="image_proc" >
+</node>
+
+<node pkg="nodelet" type="nodelet" name="image_resizer" args="standalone image_proc/resize">
+    <param name="scale_width" type="double" value="0.5"/>
+    <param name="scale_height" type="double" value="0.5"/>
+    
+    <remap to="/pylon_camera_node/image_color" from="image"/>
+    <remap to="/pylon_camera_node/camera_info" from="camera_info"/>
+</node>
 ```

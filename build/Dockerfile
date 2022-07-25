@@ -3,6 +3,10 @@ LABEL maintainer "Sebastian Ruiz <me@sruiz.uk>"
 
 SHELL ["/bin/bash","-c"]
 
+# ARG USER=docker
+# ARG UID=1000
+# ARG GID=1000
+
 RUN apt update && apt install --no-install-recommends -y \
     git \
     vim \
@@ -11,7 +15,11 @@ RUN apt update && apt install --no-install-recommends -y \
     python3-catkin-tools \
     ros-noetic-image-proc
 
+# RUN useradd -rm -d /home/$USER -s /bin/bash -g root -G sudo -u $UID $USER
+# USER $USER
+
 # Create local catkin workspace
+# ENV CATKIN_WS=/home/$USER/catkin_ws
 ENV CATKIN_WS=/root/catkin_ws
 RUN mkdir -p $CATKIN_WS/src
 WORKDIR $CATKIN_WS
@@ -20,6 +28,7 @@ RUN cd $CATKIN_WS/src && git clone https://github.com/dragandbot/dragandbot_comm
 RUN cd $CATKIN_WS/src && git clone https://github.com/basler/pylon-ros-camera.git
 
 COPY pylon_colour_camera_node.launch $CATKIN_WS/src/pylon-ros-camera/pylon_camera/launch/
+COPY colour_camera.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
 
 RUN sh -c 'echo "yaml https://raw.githubusercontent.com/basler/pylon-ros-camera/master/pylon_camera/rosdep/pylon_sdk.yaml" > /etc/ros/rosdep/sources.list.d/30-pylon_camera.list'
 
@@ -38,6 +47,16 @@ RUN echo "source /entrypoint.sh" >> /root/.bashrc
 
 COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
+
+# gosu
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y gosu; \
+	rm -rf /var/lib/apt/lists/*; \
+# verify that the binary works
+	gosu nobody true
+
+VOLUME /root/catkin_ws/src/pylon-ros-camera/pylon_camera/config
 
 ENTRYPOINT ["/entrypoint.sh"]
 

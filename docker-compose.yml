@@ -1,9 +1,10 @@
-version: '2.4'
+version: '3.9'
 
 services:
-  pylon-ros-camera:
-    container_name: pylon-ros-camera
+  ros-basler:
+    container_name: ros-basler
     build: ./build
+    user: $UID:$GID
     # stdin_open: true # docker run -i
     # tty: true        # docker run -t
     environment:
@@ -13,5 +14,22 @@ services:
       - ROS_IP=134.76.92.17 # $ hostname -I
     network_mode: host # workaround to use the camera
     restart: unless-stopped
+    volumes:
+      - config:/root/catkin_ws/src/pylon-ros-camera/pylon_camera/config
+      - launch:/root/catkin_ws/src/pylon-ros-camera/pylon_camera/launch
     # command: roslaunch pylon_camera pylon_camera_node.launch
     command: roslaunch pylon_camera pylon_colour_camera_node.launch
+
+volumes:
+    config:
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: ./config
+    launch:
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: ./launch

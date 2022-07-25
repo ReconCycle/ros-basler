@@ -7,7 +7,7 @@
     <arg name="startup_user_set" default="CurrentSetting" />
     <arg name="enable_status_publisher" default="true" />
     <arg name="enable_current_params_publisher" default="true" />
-    <arg name="config_file" default="$(find pylon_camera)/config/default.yaml" />
+    <arg name="config_file" default="$(find pylon_camera)/config/colour_camera.yaml" />
 
     <arg unless="$(arg debug)" name="launch_prefix" value="" />
     <arg     if="$(arg debug)" name="launch_prefix" value="gdb -ex run --args" />
@@ -19,10 +19,15 @@
         <param name="startup_user_set" value="$(arg startup_user_set)"/>
         <param name="enable_status_publisher" value="$(arg enable_status_publisher)"/>
         <param name="enable_current_params_publisher" value="$(arg enable_current_params_publisher)"/>
-	    <param name="image_encoding" value="yuv422"/><!-- added to provide RGB-->
+	      <!-- <param name="image_encoding" value="yuv422"/>added to provide RGB -->
+
     </node>
    
     <node ns="pylon_camera_node" name="rgb_converter" pkg="image_proc" type="image_proc" ><!-- added to provide RGB ROS node-->
     </node>
+
+    <!-- <node pkg="image_proc" type="resize">
+      <param name="image">
+    </node> -->
 
 </launch>
