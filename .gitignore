@@ -1,2 +1,3 @@
 config/*
 launch/*
+docker-compose.yml
