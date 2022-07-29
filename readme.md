@@ -30,16 +30,33 @@ In UserSet2 specify the following:
 
 The [pylon ROS driver](https://github.com/basler/pylon-ros-camera) can accept a camera calibration file.
 
-To run the calibration on a 10x7 checkerboard with 20.1mm squares:
+**VERY IMPORTANT** Run `xhost +` on the client in order to see the GUI.
+
+Access the container with:
+```bash
+docker exec -it ros-basler bash
 ```
-rosrun camera_calibration cameracalibrator.py --size 10x7 --square 0.0201 image:=/pylon_camera_node/image_color camera:=/pylon_camera_node
+
+1. To run the calibration on a 10x7 checkerboard with 20.1mm squares:
+```bash
+rosrun camera_calibration cameracalibrator.py --size 10x7 --square 0.0201 image:=/basler/image_color camera:=/basler
 ```
 [Read the docs for further info](http://wiki.ros.org/camera_calibration).
 
+2. Save the calibration and copy the yaml file from the calibrationdata.tgz
+
+3. paste the calibration in `config/`
+
+4. In `config/colour_camera.yaml` point it to the calibration file.
+
+## Extra
+
 To save an image to file, run:
+```bash
+rosrun image_view image_saver image:=/basler/image_color
 ```
-rosrun image_view image_saver image:=/pylon_camera_node/image_color
-```
+
+
 
 ## Debugging
 

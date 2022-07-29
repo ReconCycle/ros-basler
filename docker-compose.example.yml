@@ -12,13 +12,17 @@ services:
       # - "ROS_HOSTNAME=localhost" # must be the container_name
       - ROS_MASTER_URI=http://10.20.0.1:11311
       - ROS_IP=10.20.0.2 # $ hostname -I
+      - "DISPLAY=$DISPLAY"
+
     network_mode: host # workaround to use the camera
     restart: unless-stopped
     volumes:
       - config:/root/catkin_ws/src/pylon-ros-camera/pylon_camera/config
       - launch:/root/catkin_ws/src/pylon-ros-camera/pylon_camera/launch
+      - /tmp/.X11-unix:/tmp/.X11-unix # for using local xserver
     # command: roslaunch pylon_camera pylon_camera_node.launch
     command: roslaunch pylon_camera pylon_colour_camera_node.launch
+    privileged: true
 
 volumes:
     config:

@@ -13,7 +13,9 @@ RUN apt update && apt install --no-install-recommends -y \
     wget \
     curl \
     python3-catkin-tools \
-    ros-noetic-image-proc
+    ros-noetic-image-proc \
+    ros-noetic-image-pipeline \
+    x11-apps
 
 # RUN useradd -rm -d /home/$USER -s /bin/bash -g root -G sudo -u $UID $USER
 # USER $USER
@@ -31,6 +33,7 @@ COPY pylon_colour_camera_node.launch $CATKIN_WS/src/pylon-ros-camera/pylon_camer
 COPY colour_camera.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
 
 COPY calibration_1450x1450_goe.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
+COPY calibration_1450x1450_jsi.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
 
 RUN sh -c 'echo "yaml https://raw.githubusercontent.com/basler/pylon-ros-camera/master/pylon_camera/rosdep/pylon_sdk.yaml" > /etc/ros/rosdep/sources.list.d/30-pylon_camera.list'
 
