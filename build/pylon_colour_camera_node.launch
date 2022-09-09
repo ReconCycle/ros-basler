@@ -29,6 +29,18 @@
     <node ns="basler" name="rgb_converter" pkg="image_proc" type="image_proc" >
     </node>
 
+    <node ns="basler" name="image_rotator" pkg="image_rotate" type="image_rotate" >
+      <param name="target_frame_id" value="" />
+      <param name="target_x" value="0.0" />
+      <param name="target_y" value="1.0" />
+      <param name="target_z" value="0.0" />
+
+      <param name="source_x" value="0.0" />
+      <param name="source_y" value="-1.0" />
+      <param name="source_z" value="0.0" />
+      <remap from="image" to="/basler/image_rect_color" />
+      <remap from="rotated/image" to="image_rotated" />
+    </node>
     <!-- Adds a new node called image_resizer/image -->
     <!-- in the remap, the to="..." should be the actual topic we want to subscribe to -->
     <!-- <node pkg="nodelet" type="nodelet" name="image_resizer" args="standalone image_proc/resize">
