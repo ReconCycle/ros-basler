@@ -97,3 +97,40 @@ roslaunch pylon_camera pylon_camera_ip_configuration.launch
     <remap to="/pylon_camera_node/camera_info" from="camera_info"/>
 </node>
 ```
+
+## Implementation Specific Notes
+
+The Basler camera we are using is: [Basler acA4600-7gc](https://www.baslerweb.com/en/products/cameras/area-scan-cameras/ace/aca4600-7gc).
+
+The camera lens we are using is: [C125-0418-5M-P f4mm](https://www.baslerweb.com/en/products/vision-components/lenses/basler-lens-c125-0418-5m-p-f4mm/).
+The f4mm lens has an approximate effective focal length of 23mm. 
+
+In Göttingen we have the lens mounted **67cm** above the work surface. This allows us to capture the entire work surface in the image.  Göttingen also has the [f25mm lens](https://www.baslerweb.com/en/products/vision-components/lenses/basler-lens-c125-2522-5m-p-f25mm/) from Basler. All compatible lenses can be [found here](https://www.baslerweb.com/en/products/vision-components/lenses/#series=baslerace;model=aca46007gc). The f25mm lens has an approximate effective focal length of 150mm. This means that when mounted above the table at 67cm only a small part of the work surface is in the image.
+
+1. Download and install the Pylon camera software suite.
+ Link: [pylon 6.1.1 Camera Software Suite Linux x86 (64 Bit) - Debian Installer Package](https://www.baslerweb.com/de/vertrieb-support/downloads/downloads-software/#type=pylonsoftware;language=all;version=all;os=linuxx8664bit)
+
+2. To connect to the Basler camera over ethernet, create a new ethernet profile with settings:
+
+- IPv4 Method: Manual
+- Address: 192.168.1.200
+- Netmask: 255.255.255.0
+- Gateway: 192.168.1.1
+
+3. Open the pylon viewer (on the host machine) and check that the Basler Camera appears here.
+
+4. Settings to set for the Basler camera in pylon Viewer, see images in notes folder. Alternatively, do the following:
+
+In Pylon Viewer first set **Configuration Sets** to `Default configuration Set`. Then:
+- In **Analog Controls** set `Gain Auto` -> `Continuous`, and `Gamma Selector` -> `sRGB`. 
+- In **Image Format Controls set** set `Pixel Format` -> `YUV 422 (YUYV) Packed`.
+- In **AOI Controls** set `width` and `height` -> `2900` and `Center X and Y` -> `True`.
+- In **Color Improvements Control** set `Balance White Auto` -> `Continuous`.
+- In **Acquisition Controls** set `Exposure Auto` -> `Continuous` (this is the same as pressing the Automatic Image adjustment button I think?).
+
+Now in **Configuration Sets** save to `User Set 1` so that it can be loaded again easily.
+
+For fine tuning:
+- In **Auto Function Parameters** set `Target gray Value` to `50`
+
+If the FPS is very low (sub 5 fps) it could be because there is not enough light and the continuous exposure is turning up the exposure time. To fix this, open up the aperture or use more light in the room.
