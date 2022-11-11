@@ -76,7 +76,7 @@ or
 roslaunch pylon_camera pylon_camera_node.launch
 ```
 
-GigE Cameras IP Configuration can be done using the command: 
+GigE Cameras IP Configuration can be done using the command:
 ```bash
 roslaunch pylon_camera pylon_camera_ip_configuration.launch
 ```
@@ -89,12 +89,28 @@ roslaunch pylon_camera pylon_camera_ip_configuration.launch
 <node ns="pylon_camera_node" name="rgb_converter" pkg="image_proc" type="image_proc" >
 </node>
 
+<!-- rotate the image -->
+<node ns="basler" name="image_rotator" pkg="image_rotate" type="image_rotate" >
+    <param name="target_frame_id" value="" />
+    <param name="target_x" value="0.0" />
+    <param name="target_y" value="1.0" />
+    <param name="target_z" value="0.0" />
+
+    <param name="source_x" value="0.0" />
+    <param name="source_y" value="-1.0" />
+    <param name="source_z" value="0.0" />
+    <remap from="image" to="/basler/image_rect_color" />
+    <remap from="rotated/image" to="image_rotated" />
+</node> -->
+
+<!-- Adds a new node called image_resizer/image -->
+<!-- in the remap, the to="..." should be the actual topic we want to subscribe to -->
 <node pkg="nodelet" type="nodelet" name="image_resizer" args="standalone image_proc/resize">
     <param name="scale_width" type="double" value="0.5"/>
     <param name="scale_height" type="double" value="0.5"/>
     
-    <remap to="/pylon_camera_node/image_color" from="image"/>
-    <remap to="/pylon_camera_node/camera_info" from="camera_info"/>
+    <remap from="image" to="/pylon_camera_node/image_color" />
+    <remap from="camera_info" to="/pylon_camera_node/camera_info" />
 </node>
 ```
 
@@ -103,7 +119,7 @@ roslaunch pylon_camera pylon_camera_ip_configuration.launch
 The Basler camera we are using is: [Basler acA4600-7gc](https://www.baslerweb.com/en/products/cameras/area-scan-cameras/ace/aca4600-7gc).
 
 The camera lens we are using is: [C125-0418-5M-P f4mm](https://www.baslerweb.com/en/products/vision-components/lenses/basler-lens-c125-0418-5m-p-f4mm/).
-The f4mm lens has an approximate effective focal length of 23mm. 
+The f4mm lens has an approximate effective focal length of 23mm.
 
 In Göttingen we have the lens mounted **67cm** above the work surface. This allows us to capture the entire work surface in the image.  Göttingen also has the [f25mm lens](https://www.baslerweb.com/en/products/vision-components/lenses/basler-lens-c125-2522-5m-p-f25mm/) from Basler. All compatible lenses can be [found here](https://www.baslerweb.com/en/products/vision-components/lenses/#series=baslerace;model=aca46007gc). The f25mm lens has an approximate effective focal length of 150mm. This means that when mounted above the table at 67cm only a small part of the work surface is in the image.
 
@@ -122,7 +138,7 @@ In Göttingen we have the lens mounted **67cm** above the work surface. This all
 4. Settings to set for the Basler camera in pylon Viewer, see images in notes folder. Alternatively, do the following:
 
 In Pylon Viewer first set **Configuration Sets** to `Default configuration Set`. Then:
-- In **Analog Controls** set `Gain Auto` -> `Continuous`, and `Gamma Selector` -> `sRGB`. 
+- In **Analog Controls** set `Gain Auto` -> `Continuous`, and `Gamma Selector` -> `sRGB`.
 - In **Image Format Controls set** set `Pixel Format` -> `YUV 422 (YUYV) Packed`.
 - In **AOI Controls** set `width` and `height` -> `2900` and `Center X and Y` -> `True`.
 - In **Color Improvements Control** set `Balance White Auto` -> `Continuous`.

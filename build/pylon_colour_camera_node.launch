@@ -5,7 +5,7 @@
     <arg name="node_name" default="basler" />
     <arg name="mtu_size" default="1500" />
     <!-- <arg name="startup_user_set" default="CurrentSetting" /> -->
-    <!-- <arg name="startup_user_set" default="UserSet1" /> --> <!-- I set this to 724x724 using 4x binning-->
+    <!-- <arg name="startup_user_set" default="UserSet1" /> I set this to 724x724 using 4x binning -->
     <arg name="startup_user_set" default="UserSet2" />
     <arg name="enable_status_publisher" default="true" />
     <arg name="enable_current_params_publisher" default="true" />
@@ -22,35 +22,10 @@
         <param name="startup_user_set" value="$(arg startup_user_set)"/>
         <param name="enable_status_publisher" value="$(arg enable_status_publisher)"/>
         <param name="enable_current_params_publisher" value="$(arg enable_current_params_publisher)"/>
-	      <!-- <param name="image_encoding" value="yuv422"/>added to provide RGB -->
-
     </node>
    
    <!-- added to provide RGB ROS node-->
     <node ns="basler" name="rgb_converter" pkg="image_proc" type="image_proc" >
     </node>
-
-    <!-- <node ns="basler" name="image_rotator" pkg="image_rotate" type="image_rotate" >
-      <param name="target_frame_id" value="" />
-      <param name="target_x" value="0.0" />
-      <param name="target_y" value="1.0" />
-      <param name="target_z" value="0.0" />
-
-      <param name="source_x" value="0.0" />
-      <param name="source_y" value="-1.0" />
-      <param name="source_z" value="0.0" />
-      <remap from="image" to="/basler/image_rect_color" />
-      <remap from="rotated/image" to="image_rotated" />
-    </node> -->
-
-    <!-- Adds a new node called image_resizer/image -->
-    <!-- in the remap, the to="..." should be the actual topic we want to subscribe to -->
-    <!-- <node pkg="nodelet" type="nodelet" name="image_resizer" args="standalone image_proc/resize">
-      <param name="scale_width" type="double" value="0.5"/>
-      <param name="scale_height" type="double" value="0.5"/>
-        
-      <remap from="image" to="/pylon_camera_node/image_color" />
-      <remap from="camera_info" to="/pylon_camera_node/camera_info" />
-    </node> -->
 
 </launch>

@@ -27,23 +27,23 @@ image_encoding: "yuv422"
 #  as binning_x = binning_y = 1 (no subsampling).
 
 # Seb: this binning doesn't work here? binning works when set with pylon viewer
-binning_x: 2
-binning_y: 2
+# binning_x: 2
+# binning_y: 2
 
 #  The desired publisher frame rate if listening to the topics.
 #  This parameter can only be set once at startup
 #  Calling the GrabImages-Action can result in a higher framerate
-frame_rate: 5.0
+frame_rate: 15.0
 
 trigger_timeout: 5000  # in ms
 grab_timeout: 500  # in ms
 
-# Camera grab strategy 
+# Camera grab strategy
 # 0 : GrabStrategy_OneByOne
 # 1 : GrabStrategy_LatestImageOnly
 # 2 : GrabStrategy_LatestImages
 # grab_strategy : 0
-grab_strategy : 2
+grab_strategy : 1
 
 # Seb: I don't think this roi.width/height does anything. It is taking the numbers from the userset
 # roi.width: 2900
