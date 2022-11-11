@@ -33,7 +33,7 @@ image_encoding: "yuv422"
 #  The desired publisher frame rate if listening to the topics.
 #  This parameter can only be set once at startup
 #  Calling the GrabImages-Action can result in a higher framerate
-frame_rate: 15.0
+frame_rate: 10.0
 
 trigger_timeout: 5000  # in ms
 grab_timeout: 500  # in ms
