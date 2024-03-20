@@ -15,6 +15,7 @@ RUN apt update && apt install --no-install-recommends -y \
     python3-catkin-tools \
     ros-noetic-image-proc \
     ros-noetic-image-pipeline \
+    ros-noetic-image-transport-plugins \
     x11-apps
 
 # RUN useradd -rm -d /home/$USER -s /bin/bash -g root -G sudo -u $UID $USER
@@ -27,13 +28,16 @@ RUN mkdir -p $CATKIN_WS/src
 WORKDIR $CATKIN_WS
 
 RUN cd $CATKIN_WS/src && git clone https://github.com/dragandbot/dragandbot_common.git
-RUN cd $CATKIN_WS/src && git clone https://github.com/basler/pylon-ros-camera.git
 
-COPY pylon_colour_camera_node.launch $CATKIN_WS/src/pylon-ros-camera/pylon_camera/launch/
-COPY colour_camera.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
+# Use our fork of pylon-ros-camera to remove image_rect topic being published
+# RUN cd $CATKIN_WS/src && git clone https://github.com/basler/pylon-ros-camera.git
+RUN cd $CATKIN_WS/src && git clone https://github.com/ReconCycle/pylon-ros-camera.git
 
-COPY calibration_1450x1450_goe.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
-COPY calibration_1450x1450_jsi.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
+# COPY pylon_colour_camera_node.launch $CATKIN_WS/src/pylon-ros-camera/pylon_camera/launch/
+# COPY colour_camera.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
+
+# COPY calibration_1450x1450_goe.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
+# COPY calibration_1450x1450_jsi.yaml $CATKIN_WS/src/pylon-ros-camera/pylon_camera/config/
 
 RUN sh -c 'echo "yaml https://raw.githubusercontent.com/basler/pylon-ros-camera/master/pylon_camera/rosdep/pylon_sdk.yaml" > /etc/ros/rosdep/sources.list.d/30-pylon_camera.list'
 
@@ -66,4 +70,4 @@ VOLUME /root/catkin_ws/src/pylon-ros-camera/pylon_camera/config
 ENTRYPOINT ["/entrypoint.sh"]
 
 # stop docker from exiting immediately
-CMD tail -f /dev/null 
+CMD tail -f /dev/null

@@ -1,3 +1,2 @@
-config/*
-launch/*
 docker-compose.yml
+.vscode/
