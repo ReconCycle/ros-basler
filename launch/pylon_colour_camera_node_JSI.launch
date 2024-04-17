@@ -10,7 +10,7 @@
     <arg name="enable_status_publisher" default="true" />
     <arg name="enable_current_params_publisher" default="true" />
     <!-- <arg name="config_file" default="$(find pylon_camera)/config/default.yaml" /> -->
-    <arg name="config_file" default="$(find pylon_camera)/config/colour_camera.yaml" /><!-- make sure this contains the right calibration file-->
+    <arg name="config_file" default="$(find pylon_camera)/config/colour_camera_JSI.yaml" /><!-- make sure this contains the right calibration file-->
 
     <arg unless="$(arg debug)" name="launch_prefix" value="" />
     <arg     if="$(arg debug)" name="launch_prefix" value="gdb -ex run --args" />
